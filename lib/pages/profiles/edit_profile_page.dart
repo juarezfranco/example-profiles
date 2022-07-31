@@ -107,7 +107,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         icon: Icon(Icons.email),
-                        labelText: 'Email',
+                        labelText: 'Email *',
                       ),
                       validator: (String? value) {
                         if (!isEmail(value ?? "")) {
