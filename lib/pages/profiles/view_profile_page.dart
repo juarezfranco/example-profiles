@@ -19,6 +19,13 @@ class ViewProfilePage extends StatefulWidget {
 
 class _ViewProfilePageState extends State<ViewProfilePage> {
   var _fetchProfile = false;
+  late Profile profile;
+
+  @override
+  void initState() {
+    super.initState();
+    profile = widget.profile;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
       appBar: AppBar(
         title: const Text("Profile"),
         actions: [
-          if (widget.profile.logged)
+          if (profile.logged)
             IconButton(
               icon: const Icon(Icons.edit),
               onPressed: () async {
@@ -34,7 +41,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                   context,
                   PageRouteBuilder(
                     pageBuilder: (_, __, ___) => EditProfilePage(
-                      profile: widget.profile,
+                      profile: profile,
                     ),
                     transitionDuration: const Duration(seconds: 0),
                   ),
@@ -48,11 +55,11 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
       ),
       body: ! _fetchProfile
           ? _ViewProfile(
-              widget.profile,
+              profile,
             )
           : FutureBuilder<Profile>(
               future: AppContainer.resolve<FetchProfileRepository>()
-                  .fetchProfileById(widget.profile.id),
+                  .fetchProfileById(profile.id),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -69,7 +76,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                         ),
                       );
                     }
-                    final profile = snapshot.data!;
+                    profile = snapshot.data!;
 
                     return _ViewProfile(profile);
                 }
